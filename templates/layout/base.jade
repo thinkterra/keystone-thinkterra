@@ -14,36 +14,38 @@ html
 
 		//- Keystone Stylesheet
 		link(rel="stylesheet", href="/keystone/styles/keystone.min.css")
+		link(rel="stylesheet", href="/styles/site.min.css")
+
 		block css
 
 		link(rel="shortcut icon", href="/favicon.ico", type="image/x-icon")
+
 		block head
 
 	body(id='page-' + page)
 		#wrap
-			nav(role='navigation')#header.navbar.navbar-default.navbar-static-top: .container
-				a(href=backUrl).navbar-backtobrand-trigger.hidden-xs: span.ion-arrow-left-c
-				.navbar-backtobrand-message Back to the #{brand} website
+			nav(role='navigation')#header.navbar.navbar-default.navbar-static-top: .container-fluid
 				.navbar-header
 					button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-headernav-collapse')
 						span.sr-only Toggle section navigation
 						span.icon-bar
 						span.icon-bar
 						span.icon-bar
-					a(href='/keystone', class=(section == 'home' ? 'active' : null)).navbar-brand= brand
+					a(href='/', data-i18n="app.title",class=(section == 'home' ? 'active' : null)).navbar-brand
 				.collapse.navbar-collapse.navbar-headernav-collapse
 					if signout
 						ul.nav.navbar-nav.navbar-right
 							li.divider
-							li: a(href=signout).signout Sign Out
+							li: a(href=signout).signout Afmelden
 					ul.nav.navbar-nav
+						li: a(href='/', data-i18n="app.home").start
 						each navSection in nav.sections
 							if navSection.lists[0].external
 								- path = navSection.lists[0].path
 							else
 								- path = '/keystone/' + navSection.lists[0].path
 
-							li(class=section.key == navSection.key ? 'active' : null): a(href=path)= navSection.label
+							li(class=section.key == navSection.key ? 'active' : null): a(href=path, data-i18n=navSection.label)= navSection.label
 			if section.lists && section.lists.length > 1
 				nav(role='navigation')#section-nav.navbar.navbar-default.navbar-static-top: .container
 					.navbar-header
@@ -128,6 +130,17 @@ html
 		script(src="/keystone/js/common/ui.js")
 		script(src="/keystone/js/common/ui-alt-text.js")
 		script(src="/keystone/js/common/ui-sortable.js")
+		script(src="/keystone/js/common/i18next.js")
+		script.
+			i18n.init(function(err, t) {
+				  $("body").i18n({ 
+					  lng: "nl-BE", 
+					  debug: false, 
+					  fallbackLng: false, 
+					  load:'current' 
+				  });
+			});
+
 		
 		//- Page Scripts
 		block js
